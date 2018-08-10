@@ -1,0 +1,124 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven'
+
+def siteUrl = 'https://github.com/456838/saltonFramework'
+def gitUrl = 'https://github.com/456838/saltonFramework.git'
+
+group = 'com.salton123'
+version = '0.0.0.5'
+//./gradlew clean build bintrayUpload
+android {
+    compileSdkVersion "${rootProject.ext.android.compileSdkVersion}" as Integer
+    buildToolsVersion "${rootProject.ext.android.buildToolsVersion}"
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion as Integer
+        targetSdkVersion rootProject.ext.android.targetSdkVersion as Integer
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
+        buildConfigField "boolean", "APP_DEVELOP", "${rootProject.ext.dependVersion.appDevelop}"
+        buildConfigField "String", "LANGUAGE", "\"${rootProject.ext.dependVersion.appLanguage}\"" as String
+        buildConfigField "Integer", "PACKAGE_TYPE", "${rootProject.ext.dependVersion.packageType}"
+    }
+    lintOptions {
+        abortOnError false
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.github.florent37:viewanimator:1.0.5'
+    api "com.salton123:saltonFramework:${rootProject.ext.dependVersion.saltonframeworkVersion}"
+//    api 'com.github.chrisbanes:PhotoView:2.1.3'
+    api 'com.gyf.barlibrary:barlibrary:2.3.0'
+    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.10'
+//    api 'com.airbnb.android:lottie:2.5.4'
+    api('com.alibaba.android:ultraviewpager:1.0.7.5@aar') {
+        transitive = true
+    }
+    api 'cn.bingoogolapple:bga-baseadapter:1.2.9@aar'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.properyVersion.kotlinVersion}"
+    api 'com.google.android.exoplayer:exoplayer:2.7.3'
+    api "tv.danmaku.ijk.media:ijkplayer-java:${rootProject.ext.dependVersion.ijkplayerVersion}"
+}
+repositories {
+    mavenCentral()
+}
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                name 'emui'
+                description 'android develop framework'
+                // #CONFIG# // project title
+                url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'salton'
+                        // #CONFIG# // your user id (you can write your nickname)
+                        name 'salton'
+                        // #CONFIG# // your user name
+                        email 'newsalton@outlook.com'
+                        // #CONFIG# // your email
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+artifacts {
+    archives sourcesJar
+}
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "emui"
+        name = "emui"
+        // #CONFIG# project name in jcenter
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
+}
+repositories {
+    mavenCentral()
+}
