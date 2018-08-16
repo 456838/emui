@@ -1,10 +1,6 @@
-package com.salton123.emuilib.maskplayer.listener;
+package com.salton123.emuilib.listener;
 
-/**
- * Created by Devlin_n on 2017/6/22.
- */
-
-public interface VideoListener {
+public interface IVideoListener {
 
     /**
      * 播放暂停

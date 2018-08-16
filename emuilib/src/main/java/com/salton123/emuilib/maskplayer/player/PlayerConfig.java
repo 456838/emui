@@ -9,7 +9,6 @@ public class PlayerConfig {
 
     public boolean isLooping;//是否循环播放
     public boolean mAutoRotate;//是否旋转屏幕
-    public boolean addToPlayerManager;//是否添加到播放管理器
     public boolean usingSurfaceView;//是否使用TextureView
     public boolean savingProgress;//是否保存进度
     public AbstractPlayer mAbstractPlayer = null;//自定义播放核心
@@ -19,7 +18,6 @@ public class PlayerConfig {
     private PlayerConfig(PlayerConfig origin) {
         this.isLooping = origin.isLooping;
         this.mAutoRotate = origin.mAutoRotate;
-        this.addToPlayerManager = origin.addToPlayerManager;
         this.usingSurfaceView = origin.usingSurfaceView;
         this.mAbstractPlayer = origin.mAbstractPlayer;
         this.savingProgress = origin.savingProgress;
@@ -36,14 +34,6 @@ public class PlayerConfig {
 
         public Builder() {
             target = new PlayerConfig();
-        }
-
-        /**
-         * 添加到{@link VideoViewManager},如需集成到RecyclerView或ListView请开启此选项
-         */
-        public Builder addToPlayerManager() {
-            target.addToPlayerManager = true;
-            return this;
         }
 
         /**

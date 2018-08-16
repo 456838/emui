@@ -53,7 +53,7 @@ dependencies {
     }
     api 'cn.bingoogolapple:bga-baseadapter:1.2.9@aar'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.properyVersion.kotlinVersion}"
-    api 'com.google.android.exoplayer:exoplayer:2.7.3'
+//    api 'com.google.android.exoplayer:exoplayer:2.7.3'
     api "tv.danmaku.ijk.media:ijkplayer-java:${rootProject.ext.dependVersion.ijkplayerVersion}"
 }
 repositories {

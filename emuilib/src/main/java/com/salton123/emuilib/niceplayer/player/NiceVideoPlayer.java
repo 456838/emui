@@ -13,6 +13,7 @@ import android.view.TextureView;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.salton123.emuilib.listener.IVideoListener;
 import com.salton123.emuilib.niceplayer.controller.NiceVideoPlayerController;
 import com.salton123.emuilib.util.NiceUtil;
 import com.salton123.emuilib.widget.NiceTextureView;
@@ -198,6 +199,9 @@ public class NiceVideoPlayer extends FrameLayout
             mMediaPlayer.start();
             mCurrentState = STATE_PLAYING;
             mController.onPlayStateChanged(mCurrentState);
+            if (mVideoListener != null) {
+                mVideoListener.onVideoStarted();
+            }
             MLog.debug("STATE_PLAYING");
         } else if (mCurrentState == STATE_BUFFERING_PAUSED) {
             mMediaPlayer.start();
@@ -218,6 +222,9 @@ public class NiceVideoPlayer extends FrameLayout
         if (mCurrentState == STATE_PLAYING) {
             mMediaPlayer.pause();
             mCurrentState = STATE_PAUSED;
+            if (mVideoListener != null) {
+                mVideoListener.onVideoPaused();
+            }
             mController.onPlayStateChanged(mCurrentState);
             MLog.debug("STATE_PAUSED");
         }
@@ -449,6 +456,9 @@ public class NiceVideoPlayer extends FrameLayout
         public void onPrepared(IMediaPlayer mp) {
             mCurrentState = STATE_PREPARED;
             mController.onPlayStateChanged(mCurrentState);
+            if (mVideoListener != null) {
+                mVideoListener.onPrepared();
+            }
             MLog.debug("onPrepared ——> STATE_PREPARED");
             mp.start();
             // 从上次的保存位置播放
@@ -477,6 +487,9 @@ public class NiceVideoPlayer extends FrameLayout
         @Override
         public void onCompletion(IMediaPlayer mp) {
             mCurrentState = STATE_COMPLETED;
+            if (mVideoListener != null) {
+                mVideoListener.onComplete();
+            }
             mController.onPlayStateChanged(mCurrentState);
             MLog.debug("onCompletion ——> STATE_COMPLETED");
             // 清除屏幕常亮
@@ -491,6 +504,9 @@ public class NiceVideoPlayer extends FrameLayout
             // 直播流播放时去调用mediaPlayer.getDuration会导致-38和-2147483648错误，忽略该错误
             if (what != -38 && what != -2147483648 && extra != -38 && extra != -2147483648) {
                 mCurrentState = STATE_ERROR;
+                if (mVideoListener != null) {
+                    mVideoListener.onError();
+                }
                 mController.onPlayStateChanged(mCurrentState);
                 MLog.debug("onError ——> STATE_ERROR ———— what：" + what + ", extra: " + extra);
             }
@@ -502,9 +518,15 @@ public class NiceVideoPlayer extends FrameLayout
             = new IMediaPlayer.OnInfoListener() {
         @Override
         public boolean onInfo(IMediaPlayer mp, int what, int extra) {
+            if (mVideoListener != null) {
+                mVideoListener.onInfo(what, extra);
+            }
             if (what == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
                 // 播放器开始渲染
                 mCurrentState = STATE_PLAYING;
+                if (mVideoListener != null) {
+                    mVideoListener.onVideoStarted();
+                }
                 mController.onPlayStateChanged(mCurrentState);
                 MLog.debug("onInfo ——> MEDIA_INFO_VIDEO_RENDERING_START：STATE_PLAYING");
             } else if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_START) {
@@ -521,11 +543,17 @@ public class NiceVideoPlayer extends FrameLayout
                 // 填充缓冲区后，MediaPlayer恢复播放/暂停
                 if (mCurrentState == STATE_BUFFERING_PLAYING) {
                     mCurrentState = STATE_PLAYING;
+                    if (mVideoListener != null) {
+                        mVideoListener.onVideoStarted();
+                    }
                     mController.onPlayStateChanged(mCurrentState);
                     MLog.debug("onInfo ——> MEDIA_INFO_BUFFERING_END： STATE_PLAYING");
                 }
                 if (mCurrentState == STATE_BUFFERING_PAUSED) {
                     mCurrentState = STATE_PAUSED;
+                    if (mVideoListener != null) {
+                        mVideoListener.onVideoPaused();
+                    }
                     mController.onPlayStateChanged(mCurrentState);
                     MLog.debug("onInfo ——> MEDIA_INFO_BUFFERING_END： STATE_PAUSED");
                 }
@@ -715,4 +743,11 @@ public class NiceVideoPlayer extends FrameLayout
         releasePlayer();
         setUp(url, headers);
     }
+
+
+    public void setVideoListener(IVideoListener mVideoListener) {
+        this.mVideoListener = mVideoListener;
+    }
+
+    IVideoListener mVideoListener;
 }

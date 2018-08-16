@@ -10,13 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.OrientationEventListener;
 import android.widget.FrameLayout;
 
+import com.salton123.emuilib.listener.IVideoListener;
+import com.salton123.emuilib.listener.PlayerEventListener;
 import com.salton123.emuilib.maskplayer.controller.BaseVideoController;
-import com.salton123.emuilib.maskplayer.listener.PlayerEventListener;
-import com.salton123.emuilib.maskplayer.listener.VideoListener;
 import com.salton123.emuilib.maskplayer.player.AbstractPlayer;
 import com.salton123.emuilib.maskplayer.player.AndroidMediaPlayer;
 import com.salton123.emuilib.maskplayer.player.IPlayerControl;
@@ -38,7 +37,7 @@ public abstract class BasicVideoView extends FrameLayout implements IPlayerContr
     protected AbstractPlayer mMediaPlayer;//播放器
     @Nullable
     protected BaseVideoController mVideoController;//控制器
-    protected VideoListener mVideoListener;
+    protected IVideoListener mVideoListener;
     protected int bufferPercentage;//缓冲百分比
     protected boolean isMute;//是否静音
 
@@ -305,7 +304,7 @@ public abstract class BasicVideoView extends FrameLayout implements IPlayerContr
     /**
      * 设置播放器监听，用于外部监听播放器的各种状态
      */
-    public void setVideoListener(VideoListener listener) {
+    public void setVideoListener(IVideoListener listener) {
         this.mVideoListener = listener;
     }
 
@@ -414,6 +413,7 @@ public abstract class BasicVideoView extends FrameLayout implements IPlayerContr
     public String getTitle() {
         return mCurrentTitle;
     }
+
     /**
      * 视频播放出错回调
      */

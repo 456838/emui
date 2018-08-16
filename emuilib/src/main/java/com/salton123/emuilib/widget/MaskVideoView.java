@@ -20,7 +20,6 @@ import android.widget.FrameLayout;
 
 import com.salton123.emuilib.maskplayer.controller.BaseVideoController;
 import com.salton123.emuilib.maskplayer.player.AbstractPlayer;
-import com.salton123.emuilib.maskplayer.player.VideoViewManager;
 import com.salton123.emuilib.util.WindowUtil;
 
 
@@ -114,10 +113,6 @@ public class MaskVideoView extends BasicVideoView {
 
     @Override
     protected void startPlay() {
-        if (mPlayerConfig.addToPlayerManager) {
-            VideoViewManager.instance().releaseVideoPlayer();
-            VideoViewManager.instance().setCurrentVideoPlayer(this);
-        }
         super.startPlay();
     }
 

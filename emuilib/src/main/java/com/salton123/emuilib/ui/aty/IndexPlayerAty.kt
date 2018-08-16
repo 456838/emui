@@ -6,10 +6,10 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import com.salton123.emuilib.R
+import com.salton123.emuilib.bean.VideoBean
+import com.salton123.emuilib.listener.IVideoListener
 import com.salton123.emuilib.ui.aty.EmuiBaseActivity
 import com.salton123.emuilib.util.RxUtils
-import com.salton123.emuilib.bean.VideoBean
-import com.salton123.emuilib.maskplayer.listener.VideoListener
 import io.reactivex.Flowable
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.cp_video_play.*
@@ -41,7 +41,7 @@ class IndexPlayerAty : EmuiBaseActivity() {
             finish()
             false
         })
-        videoPlayer.setVideoListener(object : VideoListener {
+        videoPlayer.setVideoListener(object : IVideoListener {
             override fun onVideoStarted() {
 
             }

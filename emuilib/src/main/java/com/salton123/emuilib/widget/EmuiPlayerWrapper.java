@@ -11,9 +11,9 @@ import android.widget.FrameLayout;
 
 import com.salton123.emuilib.R;
 import com.salton123.emuilib.bean.VideoBean;
+import com.salton123.emuilib.listener.IVideoListener;
 import com.salton123.emuilib.niceplayer.controller.NakedController;
 import com.salton123.emuilib.niceplayer.player.NiceVideoPlayer;
-import com.salton123.emuilib.niceplayer.player.OnPlayStateChanged;
 import com.salton123.emuilib.util.EmuiUtil;
 import com.salton123.emuilib.util.NiceUtil;
 import com.salton123.util.RxUtils;
@@ -54,14 +54,6 @@ public class EmuiPlayerWrapper extends FrameLayout {
             nicePlayer.setPlayerType(NiceVideoPlayer.TYPE_NATIVE);
         }
     }
-
-    public void setOnPlayStateChanged(OnPlayStateChanged onPlayStateChanged) {
-        if (controller != null) {
-            controller.setOnPlayStateChanged(onPlayStateChanged);
-        }
-    }
-
-    OnPlayStateChanged mOnPlayStateChanged;
 
     public void updateFirstFrame(final String url) {
         Observable.just(url)
@@ -133,4 +125,11 @@ public class EmuiPlayerWrapper extends FrameLayout {
         }
     }
 
+
+    /**
+     * 设置播放器监听，用于外部监听播放器的各种状态
+     */
+    public void setVideoListener(IVideoListener listener) {
+        nicePlayer.setVideoListener(listener);
+    }
 }

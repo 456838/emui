@@ -1,8 +1,5 @@
-package com.salton123.emuilib.maskplayer.listener;
+package com.salton123.emuilib.listener;
 
-/**
- * Created by xinyu on 2017/12/21.
- */
 
 public interface PlayerEventListener {
 

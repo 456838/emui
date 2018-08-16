@@ -4,7 +4,7 @@ import android.content.res.AssetFileDescriptor;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.salton123.emuilib.maskplayer.listener.PlayerEventListener;
+import com.salton123.emuilib.listener.PlayerEventListener;
 
 import java.util.Map;
 

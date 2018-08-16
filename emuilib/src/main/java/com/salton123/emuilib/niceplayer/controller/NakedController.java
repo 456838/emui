@@ -6,10 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.salton123.emuilib.R;
-import com.salton123.emuilib.bean.PlayStateChangedEventArgs;
 import com.salton123.emuilib.niceplayer.player.NiceVideoPlayer;
-import com.salton123.emuilib.niceplayer.player.OnPlayStateChanged;
-import com.salton123.util.EventUtil;
 
 
 /**
@@ -53,9 +50,7 @@ public class NakedController extends NiceVideoPlayerController {
 
     @Override
     public void onPlayStateChanged(int playState) {
-        if (mOnPlayStateChanged != null) {
-            mOnPlayStateChanged.OnPlayStateChanged(playState);
-        }
+
         switch (playState) {
             case NiceVideoPlayer.STATE_IDLE:
                 mImageView.setVisibility(View.VISIBLE);
@@ -64,6 +59,7 @@ public class NakedController extends NiceVideoPlayerController {
                 mImageView.setVisibility(View.VISIBLE);
                 break;
             case NiceVideoPlayer.STATE_PREPARED:
+
                 mImageView.setVisibility(View.VISIBLE);
                 startUpdateProgressTimer();
                 break;
@@ -77,10 +73,10 @@ public class NakedController extends NiceVideoPlayerController {
 
                 break;
             case NiceVideoPlayer.STATE_BUFFERING_PAUSED:
-
                 break;
             case NiceVideoPlayer.STATE_ERROR:
                 cancelUpdateProgressTimer();
+
                 break;
             case NiceVideoPlayer.STATE_COMPLETED:
                 cancelUpdateProgressTimer();
@@ -142,11 +138,5 @@ public class NakedController extends NiceVideoPlayerController {
     public void retry() {
         mNiceVideoPlayer.restart();
     }
-
-    public void setOnPlayStateChanged(OnPlayStateChanged onPlayStateChanged) {
-        mOnPlayStateChanged = onPlayStateChanged;
-    }
-
-    OnPlayStateChanged mOnPlayStateChanged;
 
 }
